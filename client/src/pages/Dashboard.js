@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import setAuthToken from "../utils/setAuthtoken";
 import axios from "axios";
+import io from 'socket.io-client';
 
 export class Dashboard extends Component {
   state = {
     user: {}
   };
+  
   componentWillMount() {
     const token = localStorage.getItem("example-app");
 
@@ -22,7 +24,17 @@ export class Dashboard extends Component {
         });
       })
       .catch(err => console.log(err.response));
+
+
+
+      
   }
+
+  componentDidMount(){
+    const socket = io('localhost:3001');
+    socket.on('connection')
+  }
+  
   handleLogout = () => {
     localStorage.removeItem("example-app");
     this.setState({
