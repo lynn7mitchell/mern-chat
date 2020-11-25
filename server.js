@@ -1,33 +1,42 @@
 var express = require("express");
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http, {
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
-var path = require("path")
+var path = require("path");
 var mongoose = require("mongoose");
-const passport = require('passport')
+const passport = require("passport");
 const cors = require("cors");
 
 // .env
-require('dotenv').config()
+require("dotenv").config();
 
 // Initialize Express
 // var app = express();
 var PORT = process.env.PORT || 3001;
 // var server = app.listen(PORT);
 
-
 // Require all models
 var db = require("./models");
 
-io.on('connection', () => {
-  console.log('**********************************************************************a user connected **********************************************************************');
+io.sockets.on('connection', function(socket) {
+  console.log('a user has connected')
+  // once a client has connected, we expect to get a ping from them saying what room they want to join
+  socket.on('room', function(room) {
+    console.log(room)
+
+    socket.join(room);
+
+    io.sockets.in(room).emit('message', 'You are in room' + room);
+
+  });
 });
+
 
 // Configure middleware
 
@@ -37,7 +46,7 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -48,23 +57,17 @@ app.use(function(req, res, next) {
 app.use(passport.initialize());
 
 // passport config
-require ('./config/passport')(passport)
+require("./config/passport")(passport);
 
 // Connect to the Mongo DB
-mongoose
-.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
-
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 //Routes
-require("./routes/api/users")(app)
+require("./routes/api/users")(app);
 
-
-
-
-
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   // set static folder
-  app.use(express.static('client/build'));
+  app.use(express.static("client/build"));
 }
 // Send every other request to the React app
 // Define any API routes before this runs

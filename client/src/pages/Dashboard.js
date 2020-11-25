@@ -31,8 +31,8 @@ export class Dashboard extends Component {
   }
 
   componentDidMount(){
-    const socket = io('localhost:3001');
-    socket.on('connection')
+    // const socket = io('localhost:3001');
+    // socket.on('connection')
   }
   
   handleLogout = () => {
@@ -41,6 +41,9 @@ export class Dashboard extends Component {
       redirect: true
     });
   };
+  connectToRoom = (e) =>{
+    console.log(e.target.attributes.room.value)
+  }
   render() {
     return (
       <div>
@@ -51,6 +54,11 @@ export class Dashboard extends Component {
           </button>
         </Link>
         <h1>Dashboard</h1>
+
+        <Link to={{ pathname: "/chatroom/" + '1234' }}><h3 room={1234} onClick={this.connectToRoom}>John</h3></Link>
+        <Link to={{ pathname: "/chatroom/" + '2345' }}><h3  room={2345}>Paul </h3></Link>
+        <h3  room={3456}>George</h3>
+        <h3  room={4567}>Ringo</h3>
       </div>
     );
   }
