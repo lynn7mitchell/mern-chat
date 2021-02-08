@@ -35,6 +35,14 @@ io.sockets.on('connection', function(socket) {
     io.sockets.in(room).emit('message', 'You are in room' + room);
 
   });
+
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+
+  });
+
+  
 });
 
 
