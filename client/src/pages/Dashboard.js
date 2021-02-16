@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import setAuthToken from "../utils/setAuthtoken";
 import axios from "axios";
-import io from 'socket.io-client';
 
 export class Dashboard extends Component {
   state = {
@@ -41,9 +40,9 @@ export class Dashboard extends Component {
       redirect: true
     });
   };
-  connectToRoom = (e) =>{
-    console.log(e.target.attributes.room.value)
-  }
+  // connectToRoom = (e) =>{
+  //   console.log(e.target.attributes.room.value)
+  // }
   render() {
     return (
       <div>

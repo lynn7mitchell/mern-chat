@@ -17,33 +17,37 @@ export default function ChatRoom() {
     socket.on("message", (data) => {
       console.log("Incoming message:", data);
     });
+
+    return ()=>{
+      socket.close();
+    }
   }, []);
 
 
-  var socket = io();
+  // var socket = io();
 
   
 
-  const onSubmit = e =>{
-    e.preventDefault();
-    if (e.target.input.value) {
-      socket.emit('chat message', e.target.input.value);
-      e.target.input.value = '';
-    }
-  }
+  // const onSubmit = e =>{
+  //   e.preventDefault();
+  //   if (e.target.input.value) {
+  //     socket.emit('chat message', e.target.input.value);
+  //     e.target.input.value = '';
+  //   }
+  // }
 
-  socket.on('chat message', function(msg) {
-    var item = document.createElement('li');
-    item.textContent = msg;
-    document.getElementById('messages').appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
+  // socket.on('chat message', function(msg) {
+  //   var item = document.createElement('li');
+  //   item.textContent = msg;
+  //   document.getElementById('messages').appendChild(item);
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // });
 
   return (
     <div>
       <ul id="messages"></ul>
-      <form id="form" onSubmit={e => onSubmit(e)}>
-        <input id="input" autocomplete="off" />
+      <form id="form" >
+        <input id="input"  />
         <button>Send</button>
       </form>
     </div>

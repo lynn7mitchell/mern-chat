@@ -32,8 +32,11 @@ io.sockets.on('connection', function(socket) {
 
     socket.join(room);
 
-    io.sockets.in(room).emit('message', 'You are in room' + room);
+    // io.sockets.in(room).emit('message', 'You are in room ' + room);
 
+   io.sockets.in(room).emit('message', 'A user has joined the chat')
+
+   
   });
 
   socket.on('chat message', (msg) => {
@@ -42,6 +45,11 @@ io.sockets.on('connection', function(socket) {
 
   });
 
+  
+
+  socket.on('disconnect', ()=>{
+    io.emit('message', 'A user has left the chat');
+  })
   
 });
 
